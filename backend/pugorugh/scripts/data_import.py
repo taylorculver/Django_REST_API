@@ -34,5 +34,4 @@ if __name__ == '__main__':
     # PYTHONPATH and Django Environment should be ready
     # now we can import into project.
     load_data()
-
 # Run With: $ python3 ./pugorugh/scripts/data_import.py

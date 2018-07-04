@@ -33,3 +33,4 @@ class DogSerializer(serializers.ModelSerializer):
             'size'
             )
         model = models.Dog
+

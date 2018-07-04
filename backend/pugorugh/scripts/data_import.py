@@ -10,17 +10,16 @@ PROJ_DIR = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
 
 def load_data():
     filepath = path.join(PROJ_DIR, 'pugorugh', 'static', 'dog_details.json')
-    
-    with open(filepath, 'r', encoding='utf-8') as file:
+
+    with open(filepath, 'r') as file:
         data = json.load(file)
 
         serializer = DogSerializer(data=data, many=True)
         if serializer.is_valid():
             serializer.save()
+            print("Data was loaded successfully!!!")
         else:
             print(serializer.errors)
-
-    print('load_data done.')
 
 
 if __name__ == '__main__':
@@ -30,11 +29,10 @@ if __name__ == '__main__':
 
     # Assuming your serializer is named DogSerializer
     # has to be imported after django.setup()
-    try:
+    from pugorugh.serializers import DogSerializer
 
-        from pugorugh.serializers import DogSerializer
-    except ImportError:
-        raise ImportError('serializers.py must contain a properly '
-            'implemented DogSerializer class for this import to work.')
-
+    # PYTHONPATH and Django Environment should be ready
+    # now we can import into project.
     load_data()
+
+# Run With: $ python3 ./pugorugh/scripts/data_import.py

@@ -20,4 +20,3 @@ class Dog(models.Model):
         help_text='s for small, "m" for medium, "l" for large, "xl" for extra large, "u" for unknown',
         max_length=2
         )
-

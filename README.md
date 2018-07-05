@@ -85,3 +85,40 @@ The following routes are expected by the JavaScript application.
 
 	* `/api/user/preferences/`
 
+## Installation
+```
+1) Download project files from GitHub
+2) Configure project structure in IDE w/ appropriate virtualization engine
+3) Install project requirements: pip3 install -r requirements.txt
+```
+ 
+## Edit & Creating New Model Fields
+```
+1) delete (Dog, UserPref, UserDog) tables from data base and historical migrations from directory
+2) make migrations: python3 ./manage.py makemigrations pugorugh
+3) fake migration: python3 ./manage.py migrate --fake pugorugh zero
+4) migrate: python3 ./manage.py migrate
+5) load data: python3 ./pugorugh/scripts/data_import.py
+```
+
+##Tests
+
+Two tests are built into the project to test both the index and detail data views.
+
+These tests can be run by executing the following command from the terminal.
+
+python3 -i manage.py test menu/
+
+##Contributors
+
+This project was inspired by the teachers at teamtreehouse.com and was developed by Taylor.
+
+##License
+
+_Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE._
+
+

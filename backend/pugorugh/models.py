@@ -70,17 +70,17 @@ class UserPref(models.Model):
         )
     age = models.CharField(
         help_text='"b" for baby, "y" for young, "a" for adult, "s" for senior',
-        max_length=1,
+        max_length=10,
         default="b,y,a,s"
         )
     gender = models.CharField(
         help_text='"m" for male, "f" for female, "u" for unknown',
-        max_length=1,
+        max_length=10,
         default="f,m"
         )
     size = models.CharField(
         help_text='s for small, "m" for medium, '
                   '"l" for large, "xl" for extra large',
-        max_length=2,
+        max_length=10,
         default="s,m,l,xl"
         )

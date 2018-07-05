@@ -56,22 +56,46 @@ class GETNextDog(generics.RetrieveAPIView):
     serializer_class = serializers.DogSerializer
 
     def get_queryset(self):
+        """GET all Dog instances that match
+        user preferences and return that list"""
+        # GET list of dogs that match
+        # user preferences and exclude the remainder
         user = self.request.user
-        all_dogs = Dog.objects.all()
+        user_pref = UserPref.objects.get(user=user)
+        preferred_dogs = Dog.objects.filter(
+            gender__in=user_pref.gender.split(","),
+            size__in=user_pref.size.split(","),
+            user_pref_age__in=user_pref.age.split(",")
+        )
+
+        # Assign "u" or "Undecided" to any dog in the preferred dogs list
+        for dog in preferred_dogs:
+            obj, exists = UserDog.objects.get_or_create(
+                user=self.request.user,
+                dog=dog,
+                defaults={
+                    'user': self.request.user,
+                    'dog': dog,
+                    'status': UserDog._meta.get_field('status').get_default(),
+                }
+            )
+            if obj:
+                obj.save()
+
         # Return appropriate queryset based on URL parameter for preference
         decision = self.kwargs.get('decision')
         if decision == 'undecided':
-            queryset = all_dogs.filter(
+            queryset = preferred_dogs.filter(
                 userdog__status='u',
                 userdog__user_id=user.id
             ).order_by('pk')
         elif decision == 'liked':
-            queryset = all_dogs.filter(
+            queryset = preferred_dogs.filter(
                 userdog__status='l',
                 userdog__user_id=user.id
             ).order_by('pk')
         elif decision == 'disliked':
-            queryset = all_dogs.filter(
+            queryset = preferred_dogs.filter(
                 userdog__status='d',
                 userdog__user_id=user.id
             ).order_by('pk')
@@ -139,7 +163,6 @@ class PUTUserDog(APIView):
         """UPDATE current User's list of dogs by category"""
         snippet = self.get_object(self.request.user.id)
         serializer = serializers.UserDogSerializer(snippet, data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -158,7 +181,7 @@ class GETorPUTUserPref(APIView):
 
     """
     # queryset = UserPref.objects.all()
-    serializer_class = serializers.DogSerializer
+    serializer_class = serializers.UserPrefSerializer
 
     def get_object(self, request):
         """GET current user preferences for logged in user
@@ -187,8 +210,8 @@ class GETorPUTUserPref(APIView):
         """UPDATE current User Preferences"""
         snippet = self.get_object(self.request.user.id)
         serializer = serializers.UserPrefSerializer(snippet, data=request.data)
-        print(serializer)
-        print(serializer.is_valid())
+        # Great way to test for what's driving the error!
+        # print(serializer.is_valid(), serializer.errors)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -10,16 +10,19 @@ from . import views
 # API endpoints
 urlpatterns = format_suffix_patterns([
     url(r'^api/user/login/$', obtain_auth_token, name='login-user'),
-    url(r'^api/user/$', views.UserRegisterView.as_view(), name='register-user'),
+    url(r'^api/user/$', views.UserRegisterView.as_view(),
+        name='register-user'),
 
     # To get all dogs (not used in application)
     url(r'^api/dogs/$', views.AllDogs.as_view(), name='all-dogs'),
 
     # To get a dog (not used in application)
-    url(r'^api/dog/(?P<pk>-?\d+)/$', views.SpecificDog.as_view(), name='all-dogs'),
+    url(r'^api/dog/(?P<pk>-?\d+)/$', views.SpecificDog.as_view(),
+        name='all-dogs'),
 
     # To get the next liked/disliked/undecided dog
-    url(r'^api/dog/(?P<pk>-?\d+)/(?P<decision>liked|disliked|undecided)/next/$',
+    url(r'^api/dog/(?P<pk>-?\d+)/'
+        r'(?P<decision>liked|disliked|undecided)/next/$',
         views.GETNextDog.as_view(),
         name='next'),
 

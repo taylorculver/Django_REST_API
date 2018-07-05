@@ -7,6 +7,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http import Http404
 
 from . import serializers
 from .models import Dog, UserPref, UserDog
@@ -55,12 +56,41 @@ class GETNextDog(generics.RetrieveAPIView):
     serializer_class = serializers.DogSerializer
 
     def get_queryset(self):
-        return Dog.objects.all()
+        user = self.request.user
+        all_dogs = Dog.objects.all()
+        # Return appropriate queryset based on URL parameter for preference
+        decision = self.kwargs.get('decision')
+        if decision == 'undecided':
+            queryset = all_dogs.filter(
+                userdog__status='u',
+                userdog__user_id=user.id
+            ).order_by('pk')
+        elif decision == 'liked':
+            queryset = all_dogs.filter(
+                userdog__status='l',
+                userdog__user_id=user.id
+            ).order_by('pk')
+        elif decision == 'disliked':
+            queryset = all_dogs.filter(
+                userdog__status='d',
+                userdog__user_id=user.id
+            ).order_by('pk')
+        return queryset
 
     def get_object(self):
+        """GET single Dog instance from above queryset
+        and cycle through list one at a time"""
         pk = self.kwargs['pk']
         queryset = self.get_queryset()
-        return queryset.filter(id__gt=pk).first()
+        # GET first instance of Dog with a PK value > the URL
+        next_dog = queryset.filter(id__gt=pk).first()
+        # loop through list in UI
+        if next_dog is None:
+            # throw a 404 if no dogs fall into a particular userdog category
+            if queryset.first() is None:
+                raise Http404
+            return queryset.first()
+        return next_dog
 
 
 class PUTUserDog(APIView):

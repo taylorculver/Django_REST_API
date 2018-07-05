@@ -43,3 +43,11 @@ class UserPrefSerializer(serializers.ModelSerializer):
             'gender',
             'size')
         model = models.UserPref
+
+
+class UserDogSerializer(serializers.ModelSerializer):
+    """Turn UserDog Model into JSON"""
+    class Meta:
+        fields = (
+            'status',)
+        model = models.UserDog

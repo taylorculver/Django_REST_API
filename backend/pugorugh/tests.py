@@ -1,12 +1,11 @@
 from django.test import TestCase
-from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import force_authenticate
 
 from .models import User, Dog, UserDog, UserPref
-from .views import AllDogs, SpecificDog, GETNextDog
+from .views import AllDogs, SpecificDog
 
 # Create your tests here.
 
@@ -137,23 +136,5 @@ class ViewsTestCase(APITestCase):
         view = AllDogs.as_view()
         request = factory.get('userpref')
         force_authenticate(request, user=user)
-        response = view(request)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_GETNextDog_view(self):
-        factory = APIRequestFactory()
-        user = User.objects.get(username="unittest")
-        view = GETNextDog.as_view()
-        request = factory.get('next')
-        force_authenticate(request, user=user)
-        response = view(request, pk=1, decision='undecided')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_PUTUserDog_view(self):
-        factory = APIRequestFactory()
-        user = User.objects.put(username="unittest")
-        view = AllDogs.as_view()
-        request = factory.get('decide')
-        force_authenticate(request, user=user, age=12, gender='m', size='l')
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

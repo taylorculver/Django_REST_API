@@ -84,6 +84,7 @@ class GETNextDog(generics.RetrieveAPIView):
 
         # Return appropriate queryset based on URL parameter for preference
         decision = self.kwargs.get('decision')
+        queryset = preferred_dogs
         if decision == 'undecided':
             queryset = preferred_dogs.filter(
                 userdog__status='u',

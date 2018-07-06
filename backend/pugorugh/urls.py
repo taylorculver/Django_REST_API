@@ -18,7 +18,7 @@ urlpatterns = format_suffix_patterns([
 
     # To get a dog (not used in application)
     url(r'^api/dog/(?P<pk>-?\d+)/$', views.SpecificDog.as_view(),
-        name='all-dogs'),
+        name='specific-dog'),
 
     # To get the next liked/disliked/undecided dog
     url(r'^api/dog/(?P<pk>-?\d+)/'

@@ -101,19 +101,23 @@ The following routes are expected by the JavaScript application.
 5) load data: python3 ./pugorugh/scripts/data_import.py
 ```
 
-##Tests
+## Tests
 
 Two tests are built into the project to test both the index and detail data views.
 
 These tests can be run by executing the following command from the terminal.
 
-python3 -i manage.py test menu/
+```
+1) Run Coverage: coverage run --source='.' manage.py  test pugorugh
+2) Determine % of Code Covered: coverage report
+3) Pretty HTML Report (navigate to by opening /htmlcov/index.html in browser: coverage html
+```
 
-##Contributors
+## Contributors
 
 This project was inspired by the teachers at teamtreehouse.com and was developed by Taylor.
 
-##License
+## License
 
 _Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
